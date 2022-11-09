@@ -1,5 +1,4 @@
-﻿Imports Microsoft.Win32
-Public Class frmMain
+﻿Public Class frmMain
     Public Property RedirectStandardOutput As Boolean
     Dim strFolderName As String
     Dim WIMMounted As Boolean = False
@@ -72,7 +71,7 @@ Public Class frmMain
         End If
     End Sub
 
-   
+
 
     Private Sub btnMount_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMount.Click
         txtOutput.Text = ""
@@ -117,7 +116,7 @@ Public Class frmMain
             e.Cancel = True
         End If
 
-       
+
     End Sub
 
 
@@ -133,7 +132,7 @@ Public Class frmMain
 
     End Sub
 
-   
+
     Private Sub btnOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenFolder.Click
         Dim OpenFolder As New Process
         Process.Start("explorer.exe", txtMount.Text)
@@ -142,7 +141,7 @@ Public Class frmMain
     Private Sub btnExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExit.Click
         Me.Close()
     End Sub
-    
+
     Private Sub OpenDISMLogToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenDISMLogToolStripMenuItem.Click
         Dim strWinDir As String = System.Environment.GetEnvironmentVariable("windir")
         Dim OpenDISMLog As New Process
@@ -1038,5 +1037,23 @@ Public Class frmMain
         frmProgress.ShowDialog()
         txtOutput.Text = strOutput
 
+    End Sub
+
+    Private Sub cleanWinSxSapply_Click(sender As Object, e As EventArgs) Handles cleanWinSxSapply.Click
+        If resetBase.Checked = True Then
+            strDISMArguments = "/online /Cleanup-Image /StartComponentCleanup /ResetBase"
+        Else
+            strDISMArguments = "/online /Cleanup-Image /StartComponentCleanup"
+        End If
+        BackgroundWorkerDISMCommand.RunWorkerAsync(strDISMArguments)
+        frmProgress.ShowDialog()
+        txtOutput.Text = strOutput
+    End Sub
+
+    Private Sub analyseApply_Click(sender As Object, e As EventArgs) Handles analyseApply.Click
+        strDISMArguments = "/Online /Cleanup-Image /AnalyzeComponentStore"
+        BackgroundWorkerDISMCommand.RunWorkerAsync(strDISMArguments)
+        frmProgress.ShowDialog()
+        txtOutput.Text = strOutput
     End Sub
 End Class
